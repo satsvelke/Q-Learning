@@ -1,0 +1,302 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Q Learning</title>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.3.0.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" integrity="undefined" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="undefined" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="undefined" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-9">
+                <div class="table-responsive">
+                    <table class="table" id='board'>
+                        <tr>
+                           @*<label class="bomb">B</label>*@
+                            <td style="background-color:mediumvioletred" class="td" id="L1"><label class="start">START</label><br />(L1)<br /><label class="lab" id="L1L"></label></td>
+                            <td class="td" id="L2"><label class="bomb">B</label><br />(L2)<br /><label class="lab" id="L2L"></label></td>
+                            <td class="td" id="L3"><br />(L3)<br /><label class="lab" id="L3L"></label></td>
+                            <td class="td" id="L4"><br />(L4)<br /><label class="lab" id="L4L"></label></td>
+                            <td class="td" id="L5"><br />(L5)<br /><label class="lab" id="L5L"></label></td>
+                            <td class="td" id="L6"><br />(L6)<br /><label class="lab" id="L6L"></label></td>
+                        </tr>
+                        <tr>
+                            <td class="td" id="L7"><br />(L7)<br /><label class="lab" id="L7L"></label></td>
+                            <td class="td" id="L8"> <label class="bomb">B</label><br />(L8)<br /><label class="lab" id="L8L"></label></td>
+                            <td class="td" id="L9"><br />(L9)<br /><label class="lab" id="L9L"></label></td>
+                            <td class="td" id="L10"><label class="bomb">B</label><br />(L10)<br /><label class="lab" id="L10L"></label></td>
+                            <td class="td" id="L11"><label class="bomb">B</label> <br />(L11)<br /><label class="lab" id="L11L"></label></td>
+                            <td class="td" id="L12"><br />(L12)<br /><label class="lab" id="L12L"></label></td>
+                        </tr>
+                        <tr>
+                            <td class="td" id="L13"><br />(L13)<br /><label class="lab" id="L13L"></label></td>
+                            <td class="td" id="L14"><label class="bomb">B</label><br />(L14)<br /><label class="lab" id="L14L"></label></td>
+                            <td class="td" id="L15"><br />(L15)<br /><label class="lab" id="L15L"></label></td>
+                            <td class="td" id="L16"><br />(L16)<br /><label class="lab" id="L16L"></label></td>
+                            <td class="td" id="L17"><br />(L17)<br /><label class="lab" id="L17L"></label></td>
+                            <td class="td" id="L18"><br />(L18)<br /><label class="lab" id="L18L"></label></td>
+                        </tr>
+                        <tr>
+                            <td class="td" id="L19"> <br />(L19)<br /><label class="lab" id="L19L"></label></td>
+                            <td class="td" id="L20"><label class="bomb">B</label><br />(L20)<br /><label class="lab" id="L20L"></label></td>
+                            <td class="td" id="L21"><br />(L21)<br /><label class="lab" id="L21L"></label></td>
+                            <td class="td" id="L22"> <label class="bomb">B</label><br />(L22)<br /><label class="lab" id="L22L"></label></td>
+                            <td class="td" id="L23"><br />(L23)<br /><label class="lab" id="L23L"></label></td>
+                            <td class="td" id="L24"><label class="bomb">B</label><br />(L24)<br /><label class="lab" id="L24L"></label></td>
+                        </tr>
+                        <tr>
+                            <td class="td" id="L25"><br />(L25)<br /><label class="lab" id="L25L"></label></td>
+                            <td class="td" id="L26"><label class="bomb">B</label><br />(L26)<br /><label class="lab" id="L26L"></label></td>
+                            <td class="td" id="L27"><br />(L27)<br /><label class="lab" id="L27L"></label></td>
+                            <td class="td" id="L28"><label class="bomb">B</label><br />(L28)<br /><label class="lab" id="L28L"></label></td>
+                            <td class="td" id="L29"><br />(L29)<br /><label class="lab" id="L29L"></label></td>
+                            <td class="td" id="L30"><br />(L30)<br /><label class="lab" id="L30L"></label></td>
+                        </tr>
+                        <tr>
+                            <td class="td" id="L31"><br />(L31)<br /><label class="lab" id="L31L"></label></td>
+                            <td class="td" id="L32"> <br />(L32)<br /><label class="lab" id="L32L"></label></td>
+                            <td class="td" id="L33"><br />(L33)<br /><label class="lab" id="L33L"></label></td>
+                            <td class="td" id="L34"><label class="bomb">B</label><br />(L34)<br /><label class="lab" id="L34L"></label></td>
+                            <td class="td" id="L35"><label class="bomb">B</label><br />(L35)<br /><label class="lab" id="L35L"></label></td>
+                            <td style="background-color:green" class="td" id="L36"><label class="end">END</label><br />(L36)<br /><label class="lab" id="L36L"></label></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <svg width="4000" height="4000" id="fullsvg"></svg>
+
+            <div id="4" style="margin-top:20px" class="col-sm-3">
+
+                <form>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1"></label>
+                        @*<label class="badge" id="explorationrate"></label>*@
+                        <button type="button" class="btn btn-primary">ExplorationRate <span id="explorationrate" class="badge">0</span></button>
+                    </div>
+                    <div style="margin-top:20px" class="form-group">
+                        <label for="exampleFormControlSelect1"> </label>
+                        @*<label class="badge" id="episodeNumber"></label>*@
+                        <button type="button" class="btn btn-primary">Current Episode <span id="episodeNumber" class="badge">0</span></button>
+                    </div>
+                    <div style="margin-top:20px" class="form-group">
+                        <label for="exampleFormControlSelect2"></label>
+                        @*<label id="qvalue"></label>*@
+                        <button type="button" class="btn btn-primary">Current Position <span id="position" class="badge">0</span></button>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">All Paths</label>
+                        <textarea id="allPaths" class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Existing enviorment name</label>
+                        <input type="text" class="form-control" value="na" id="exstingenv" placeholder="add name to existing env if any " />
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Define Episode</label>
+                        <input type="text" class="form-control" id="episode" placeholder="define episode" />
+                    </div>
+                    <div style="margin-top:10px;" class="form-group">
+                        <label for="exampleFormControlTextarea1"></label>
+                        <input type="button" class="btn btn-success" value="train" id="train" />
+                        <input type="button" class="btn btn-success" value="higest path from env" id="fetchHigestPath" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        svg {
+            width: auto;
+            height: auto;
+        }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+        .end{
+            color:white;
+        }
+        .start{
+            color:white
+        }
+        .bomb {
+            color: red
+        }
+        .lab {
+            font-size: 12px;
+        }
+
+        #board {
+            padding: 0px;
+            margin: 0 auto;
+            margin-top: 25px;
+            background-color: black;
+            color: white;
+            margin-left: 0px !important;
+        }
+
+            #board tr td {
+                border: 1px solid #1c1c1c;
+                font-family: Helvetica;
+                font-size: 16px;
+                text-align: center;
+            }
+
+        #fullsvg {
+            left: 0px;
+            top: 0px;
+            position: fixed;
+            margin: 0;
+            pointer-events: none;
+        }
+    </style>
+
+
+
+    <script>
+        $(function () {
+            var game = $.connection.aiLizard;
+            var c = 'L1';
+            game.client.getPath = function (path) {
+                //$('#paths').val(path);
+
+                // $("td").removeAttr("style");
+                //$("#L1").attr("style", "background-color: mediumvioletred");
+                //$("#L1L").text("L1")
+                for (var i = 0; i < path.length; i++) {
+                    $("#" + path[i].PositionName + "L").text("Q=" + path[i].QValue.toFixed(3) + "")
+                }
+
+            };
+
+            //game.client.currentState = function (q) {
+            //    $("td").removeAttr("style");
+            //    $("#" + q.PositionName).attr("style", "background-color: mediumvioletred")
+            //    $("#qvalue").text(q.QValue)
+
+            //};
+
+            game.client.getExplorationRate = function (ExplorationRate) {
+                $("#explorationrate").text(ExplorationRate)
+            };
+
+
+            game.client.getEpisode = function (n) {
+                $('#episodeNumber').text(n)
+            };
+
+            game.client.NextState = function (nextState) {
+                //if (typeof nextState !== 'undefined')
+                //    $('#position').text(nextState.PositionName);
+            };
+
+            game.client.getHighRewardPath = function (finalData) {
+                var color = getRandomColor();
+                var stroke = 1.5;
+                let position = getRandomInt(30);
+                var res2 = finalData.split(",");
+                for (var k = 0; k < res2.length; k++) {
+                    if (typeof res2[k + 1] !== 'undefined') {
+                        var b1 = document.getElementById(res2[k]).getBoundingClientRect();
+                        var b2 = document.getElementById(res2[k + 1]).getBoundingClientRect();
+                        var newLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                        newLine.setAttribute('id', 'line' + k +'');
+                        newLine.setAttribute('x1', (b1.left + b1.width / 2) + position);
+                        newLine.setAttribute('y1', (b1.top + b1.height / 2) + position);
+                        newLine.setAttribute('x2', (b2.left + b2.width / 2) + position);
+                        newLine.setAttribute('y2', (b2.top + b2.height / 2) + position);
+                        newLine.setAttribute('style', 'stroke: ' + color + '; stroke-width: ' + stroke + ';');
+                        document.getElementById("fullsvg").append(newLine);
+                    }
+
+                }
+            };
+
+
+            function getRandomColor() {
+                var letters = '0123456789ABCDEF';
+                var color = '#';
+                for (var i = 0; i < 6; i++) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+                return color;
+            }
+
+            function getRandomArbitrary(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            function getRandomInt(max) {
+                return Math.floor(Math.random() * max);
+            }
+
+            game.client.UniqueState = function (allStates, latestEnv) {
+
+                $('#exstingenv').val(latestEnv);
+
+                for (var i = 0; i < allStates.length; i++) {
+                    var color = getRandomColor();
+                    var stroke = 1.5;
+                    var res2 = allStates[i].split(",");
+                    let position = getRandomInt(30);
+
+
+                    if (res2.includes("L36")) {
+
+                        $('#allPaths').val($('#allPaths').val() + "\n" + allStates[i]);
+
+
+                        for (var k = 0; k < res2.length; k++) {
+                            if (typeof res2[k + 1] !== 'undefined') {
+                                var b1 = document.getElementById(res2[k]).getBoundingClientRect();
+                                var b2 = document.getElementById(res2[k + 1]).getBoundingClientRect();
+                                var newLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                                newLine.setAttribute('id', 'line' + k + '' + i + '');
+                                newLine.setAttribute('x1', (b1.left + b1.width / 2) + position);
+                                newLine.setAttribute('y1', (b1.top + b1.height / 2) + position);
+                                newLine.setAttribute('x2', (b2.left + b2.width / 2) + position);
+                                newLine.setAttribute('y2', (b2.top + b2.height / 2) + position);
+                                newLine.setAttribute('style', 'stroke: ' + color + '; stroke-width: ' + stroke + ';');
+                                document.getElementById("fullsvg").append(newLine);
+                            }
+
+                        }
+                    }
+
+                }
+
+            };
+
+            $.connection.hub.start().done(function () {
+                $('#train').click(function () {
+                    game.server.train(parseInt($("#episode").val()), $("#exstingenv").val());
+                });
+
+                $('#fetchHigestPath').click(function () {
+                    game.server.fetchHighRewardPath($('#exstingenv').val());
+                });
+            });
+
+
+        });
+    </script>
+
+</body>
+</html>

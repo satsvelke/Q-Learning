@@ -1,0 +1,161 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>TicTacToe</title>
+</head>
+<body>
+    <div>
+
+        @* <input type="text" name="Name" id="name" placeholder="Enter Name" /><br /><br />*@
+        <input type="text" id="symbol" maxlength="1" placeholder="select symbol" /><br /><br />
+        <input type="button" value="Start" id="start" /><br /><br />
+        <p id="names">
+        </p>
+
+        <table id='board' style="display:none">
+            <tr>
+                <td class="td" id="1"></td>
+                <td class="td" id="2"></td>
+                <td class="td" id="3"></td>
+            </tr>
+            <tr>
+                <td class="td" id="4"></td>
+                <td class="td" id="5"></td>
+                <td class="td" id="6"></td>
+            </tr>
+            <tr>
+                <td class="td" id="7"></td>
+                <td class="td" id="8"></td>
+                <td class="td" id="9"></td>
+            </tr>
+        </table>
+
+
+        <input type="button" value="New Game" id="newgame" style="display:none" /><br /><br />
+        <input type="button" value="Stop" id="stop" style="display:none" /><br /><br />
+
+    </div>
+
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+        #board {
+            padding: 0px;
+            margin: 0 auto;
+            margin-top: 25px;
+        }
+
+            #board tr td {
+                width: 80px;
+                height: 80px;
+                border: 1px solid #1c1c1c;
+                font-family: Helvetica;
+                font-size: 30px;
+                text-align: center;
+            }
+
+                #board tr td:hover {
+                    background: #e4e4e4;
+                    cursor: pointer;
+                }
+    </style>
+
+
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.3.0.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script>
+        $(function () {
+            var game = $.connection.ticTacHub;
+
+            game.client.addNames = function (name) {
+                $('#names').append('<li><strong> I choose ' + name + '</li>');
+                if ($('#names li').length == 2) {
+                    $("#board").fadeIn('slow');
+                }
+            };
+
+            game.client.addTics = function (name, tic, id) {
+                $("#" + id).text(tic);
+                var x = checkForWinner();
+                if (x != '') {
+                    alert(x + " is winner");
+                    //$("#stop").fadeIn('slow');
+                }
+                $("#newgame").fadeIn('slow');
+
+            };
+
+            game.client.reload = function (something) {
+                if (something =='yes') {
+                    location.reload();
+                }
+            }
+
+
+            $.connection.hub.start().done(function () {
+                $('#start').click(function () {
+                    if ($("#playerA").val() == "X") {
+                        $("#playerA").val('O');
+                    }
+                    game.server.names($('#symbol').val());
+                });
+
+                $("#board").on("click", "td", function () {
+                    game.server.addtictac($('#name').val(), $("#symbol").val(), $(this).attr("id"));
+                    $("#symbol").prop("disabled", "disabled");
+                });
+
+                $("#newgame").click(function () {
+                    game.server.reloadgame('yes');
+                });
+
+            });
+
+            function checkForWinner() {
+                var space1 = $("#board tr:nth-child(1) td:nth-child(1)").text();
+                var space2 = $("#board tr:nth-child(1) td:nth-child(2)").text();
+                var space3 = $("#board tr:nth-child(1) td:nth-child(3)").text();
+                var space4 = $("#board tr:nth-child(2) td:nth-child(1)").text();
+                var space5 = $("#board tr:nth-child(2) td:nth-child(2)").text();
+                var space6 = $("#board tr:nth-child(2) td:nth-child(3)").text();
+                var space7 = $("#board tr:nth-child(3) td:nth-child(1)").text();
+                var space8 = $("#board tr:nth-child(3) td:nth-child(2)").text();
+                var space9 = $("#board tr:nth-child(3) td:nth-child(3)").text();
+                if ((space1 == space2) && (space2 == space3)) { return space3; }
+                else if ((space4 == space5) && (space5 == space6)) { return space6; }
+                else if ((space7 == space8) && (space8 == space9)) { return space9; }
+                else if ((space1 == space4) && (space4 == space7)) { return space7; }
+                else if ((space2 == space5) && (space5 == space8)) { return space8; }
+                else if ((space3 == space6) && (space6 == space9)) { return space9; }
+                else if ((space1 == space5) && (space5 == space9)) { return space9; }
+                else if ((space3 == space5) && (space5 == space7)) { return space7; }
+                return '';
+            }
+
+          
+
+            $("#stop").click(function () {
+                location.reload();
+            });
+
+        });
+    </script>
+
+</body>
+</html>
