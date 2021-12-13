@@ -9,46 +9,28 @@ namespace ai_lizard_ui.Models
 {
     public class AiLizard : Hub
     {
-        public void Train(int totalEpisodes, string enviormentPath)
+        public void Train(Q q)
         {
-            var columns = 6; var rows = 6;
 
-            var q = new Q();
             var exploration_rate_threshhold = 0.0M;
 
-            var env = new List<QStates>();
+            var env = q.QStates;
 
-            if (enviormentPath.Equals("na"))
-                env = q.GetEnviorment(columns, rows); /// get enviorment with state values 
-            else
-            {
-                var savedEnviorment = File.ReadAllText(string.Concat(@"d:\\qlog\\enviorments\\", enviormentPath));
-                env = JsonConvert.DeserializeObject<List<QStates>>(savedEnviorment);
-            }
-
-            var logfile = @"d:\\qlog\\episode_log_" + DateTime.Now.ToString("ddmmyyyyhhsstt") + ".txt";
-            var savedEnv = @"d:\\qlog\\enviorments\\env_" + DateTime.Now.ToString("ddmmyyyyhhsstt") + ".txt";
             var uniqueStateList = new List<QStates>();
             var nextState = new QStates();
             var currentState = new QStates();
-            Clients.All.GetPath(env);
-
             var finalUniquePaths = new List<string>();
 
             // episodes loop 
-            for (int episode = 1; episode < totalEpisodes; episode++)
+            for (int episode = 1; episode < q.TotalEpisode; episode++)
             {
-                currentState = env.Where(c => c.PositionName == string.Concat("L1")).FirstOrDefault();
+                currentState = env.Where(c => c.IsStart == true).FirstOrDefault();
 
                 for (int i = 0; i < 36; i++)
                 {
-                    // System.Threading.Thread.Sleep(200);
-
                     // get random initial action 
-                    var randomAction = q.GetRandomAction(columns, rows);
+                    var randomAction = q.GetRandomAction(q.Columns, q.Rows);
                     var actionValue = randomAction.FirstOrDefault().Value;
-
-                    // Clients.All.CurrentState(currentState);
 
 
                     if ((currentState.PositionName == "L7"
@@ -96,9 +78,6 @@ namespace ai_lizard_ui.Models
 
 
                 q.ExplorationRate = q.MinimumExplorationRate + (q.MaxExplorationRate - q.MinimumExplorationRate) * Convert.ToDecimal(Math.Exp((double)(-(q.ExplorationDecayRate * episode))));
-                //q.ExplorationRate = Math.Max(q.MinimumExplorationRate, (q.ExplorationRate * q.ExplorationDecayRate));
-                //if (q.ExplorationRate >= q.MinimumExplorationRate)
-                //    q.ExplorationRate *= q.ExplorationDecayRate;
 
                 Clients.All.GetExplorationRate(q.ExplorationRate);
 
@@ -117,8 +96,8 @@ namespace ai_lizard_ui.Models
                     { break; }
                 }
 
+
                 path = path.TrimEnd(',');
-                File.AppendAllText(logfile, "=>" + r + Environment.NewLine);
 
                 if (!finalUniquePaths.Contains(path))
                     finalUniquePaths.Add(path);
@@ -129,13 +108,7 @@ namespace ai_lizard_ui.Models
             }/// episode loop 
 
 
-            File.AppendAllText(logfile, "Final Unique Path" + Environment.NewLine);
-            foreach (var p in finalUniquePaths)
-                File.AppendAllText(logfile, p + Environment.NewLine);
-
-            Clients.All.UniqueState(finalUniquePaths, Path.GetFileName(savedEnv));
-            File.AppendAllText(savedEnv, JsonConvert.SerializeObject(env));
-
+            Clients.All.UniqueState(finalUniquePaths, "");
         }
 
         public void FetchHighRewardPath(string enviormentPath)
@@ -152,23 +125,27 @@ namespace ai_lizard_ui.Models
                 path += maxQstate.PositionName + ",";
                 cenp = maxQstate;
             }
-           
+
             Clients.All.GetHighRewardPath(path.TrimEnd(','));
         }
     }
 
-    
+
     public class Q
     {
-        public decimal CurrentQ { get; set; } = 0;
-        public decimal LearningRate { get; set; } = 0.2M; // 
-        public decimal DiscountRate { get; set; } = 0.9M; // range from 0.8 to 0.99
-        public decimal MaxQ { get; set; } = 0; // max reward achieved 
-        public decimal CurrentQValues { get; set; } = 0;// current q value of block 
-        public decimal ExplorationRate { get; set; } = 1M;
-        public decimal MaxExplorationRate { get; set; } = 1M;
-        public decimal MinimumExplorationRate { get; set; } = 0.005M;
-        public decimal ExplorationDecayRate { get; set; } = 0.0000001M;
+        public decimal CurrentQ { get; set; }
+        public decimal LearningRate { get; set; } // 
+        public decimal DiscountRate { get; set; }  // range from 0.8 to 0.99
+        public decimal MaxQ { get; set; }
+        public decimal CurrentQValues { get; set; }
+        public decimal ExplorationRate { get; set; }
+        public decimal MaxExplorationRate { get; set; }
+        public decimal MinimumExplorationRate { get; set; }
+        public decimal ExplorationDecayRate { get; set; }
+        public int Columns { get; set; }
+        public int Rows { get; set; }
+        public int TotalEpisode { get; set; }
+        public List<QStates> QStates { get; set; }
 
         public Dictionary<string, int> GetRandomAction(int columns, int rows, string key = "")
         {
@@ -199,7 +176,6 @@ namespace ai_lizard_ui.Models
 
             return newDict;
         }
-
 
         public QStates GetMaxQStateFromCurrentPostion(QStates qStates, List<QStates> env)
         {
@@ -249,16 +225,11 @@ namespace ai_lizard_ui.Models
         {
             if (qStates != null)
             {
-
                 var maxQState = GetMaxQStateFromCurrentPostion(qStates, env);
-                //var learnedValue = qStates.Reward + (DiscountRate * maxQState.QValue);
-                //var q = ((1 - LearningRate) * qStates.QValue) + (LearningRate * learnedValue);
-                // var q = qStates.QValue * (1 - LearningRate) + LearningRate * (qStates.Reward + DiscountRate * maxQvalue);
                 var q = qStates.QValue + LearningRate * (qStates.Reward + DiscountRate * (maxQState.QValue - qStates.QValue));
                 return q;
             }
             else return 0;
-
         }
 
         public List<QStates> GetEnviorment(int rows, int columns)
@@ -276,7 +247,7 @@ namespace ai_lizard_ui.Models
                 else if (positionName.Equals("L26")) reward = -100;
 
                 else if (positionName.Equals("L10")) reward = -100;
-                //else if (positionName.Equals("L16")) reward = -100;
+                else if (positionName.Equals("L16")) reward = -100;
                 else if (positionName.Equals("L22")) reward = -100;
                 else if (positionName.Equals("L28")) reward = -100;
                 else if (positionName.Equals("L35")) reward = -100;
@@ -303,9 +274,10 @@ namespace ai_lizard_ui.Models
         public string PositionName { get; set; }
         public decimal QValue { get; set; }
         public decimal Reward { get; set; }
+
+        public bool IsStart { get; set; } = false;
+        public bool IsEnd { get; set; } = false;
+
     }
-    public class QTable
-    {
-        public List<QStates> QStates { get; set; }
-    }
+
 }

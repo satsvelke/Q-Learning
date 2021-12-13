@@ -16,69 +16,26 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="undefined" crossorigin="anonymous"></script>
 </head>
 <body>
+
     <div class="container">
-        <div class="row">
-            <div class="col-sm-9">
-                <div class="table-responsive">
-                    <table class="table" id='board'>
-                        <tr>
-                           @*<label class="bomb">B</label>*@
-                            <td style="background-color:mediumvioletred" class="td" id="L1"><label class="start">START</label><br />(L1)<br /><label class="lab" id="L1L"></label></td>
-                            <td class="td" id="L2"><label class="bomb">B</label><br />(L2)<br /><label class="lab" id="L2L"></label></td>
-                            <td class="td" id="L3"><br />(L3)<br /><label class="lab" id="L3L"></label></td>
-                            <td class="td" id="L4"><br />(L4)<br /><label class="lab" id="L4L"></label></td>
-                            <td class="td" id="L5"><br />(L5)<br /><label class="lab" id="L5L"></label></td>
-                            <td class="td" id="L6"><br />(L6)<br /><label class="lab" id="L6L"></label></td>
-                        </tr>
-                        <tr>
-                            <td class="td" id="L7"><br />(L7)<br /><label class="lab" id="L7L"></label></td>
-                            <td class="td" id="L8"> <label class="bomb">B</label><br />(L8)<br /><label class="lab" id="L8L"></label></td>
-                            <td class="td" id="L9"><br />(L9)<br /><label class="lab" id="L9L"></label></td>
-                            <td class="td" id="L10"><label class="bomb">B</label><br />(L10)<br /><label class="lab" id="L10L"></label></td>
-                            <td class="td" id="L11"><label class="bomb">B</label> <br />(L11)<br /><label class="lab" id="L11L"></label></td>
-                            <td class="td" id="L12"><br />(L12)<br /><label class="lab" id="L12L"></label></td>
-                        </tr>
-                        <tr>
-                            <td class="td" id="L13"><br />(L13)<br /><label class="lab" id="L13L"></label></td>
-                            <td class="td" id="L14"><label class="bomb">B</label><br />(L14)<br /><label class="lab" id="L14L"></label></td>
-                            <td class="td" id="L15"><br />(L15)<br /><label class="lab" id="L15L"></label></td>
-                            <td class="td" id="L16"><br />(L16)<br /><label class="lab" id="L16L"></label></td>
-                            <td class="td" id="L17"><br />(L17)<br /><label class="lab" id="L17L"></label></td>
-                            <td class="td" id="L18"><br />(L18)<br /><label class="lab" id="L18L"></label></td>
-                        </tr>
-                        <tr>
-                            <td class="td" id="L19"> <br />(L19)<br /><label class="lab" id="L19L"></label></td>
-                            <td class="td" id="L20"><label class="bomb">B</label><br />(L20)<br /><label class="lab" id="L20L"></label></td>
-                            <td class="td" id="L21"><br />(L21)<br /><label class="lab" id="L21L"></label></td>
-                            <td class="td" id="L22"> <label class="bomb">B</label><br />(L22)<br /><label class="lab" id="L22L"></label></td>
-                            <td class="td" id="L23"><br />(L23)<br /><label class="lab" id="L23L"></label></td>
-                            <td class="td" id="L24"><label class="bomb">B</label><br />(L24)<br /><label class="lab" id="L24L"></label></td>
-                        </tr>
-                        <tr>
-                            <td class="td" id="L25"><br />(L25)<br /><label class="lab" id="L25L"></label></td>
-                            <td class="td" id="L26"><label class="bomb">B</label><br />(L26)<br /><label class="lab" id="L26L"></label></td>
-                            <td class="td" id="L27"><br />(L27)<br /><label class="lab" id="L27L"></label></td>
-                            <td class="td" id="L28"><label class="bomb">B</label><br />(L28)<br /><label class="lab" id="L28L"></label></td>
-                            <td class="td" id="L29"><br />(L29)<br /><label class="lab" id="L29L"></label></td>
-                            <td class="td" id="L30"><br />(L30)<br /><label class="lab" id="L30L"></label></td>
-                        </tr>
-                        <tr>
-                            <td class="td" id="L31"><br />(L31)<br /><label class="lab" id="L31L"></label></td>
-                            <td class="td" id="L32"> <br />(L32)<br /><label class="lab" id="L32L"></label></td>
-                            <td class="td" id="L33"><br />(L33)<br /><label class="lab" id="L33L"></label></td>
-                            <td class="td" id="L34"><label class="bomb">B</label><br />(L34)<br /><label class="lab" id="L34L"></label></td>
-                            <td class="td" id="L35"><label class="bomb">B</label><br />(L35)<br /><label class="lab" id="L35L"></label></td>
-                            <td style="background-color:green" class="td" id="L36"><label class="end">END</label><br />(L36)<br /><label class="lab" id="L36L"></label></td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
 
-            <svg width="4000" height="4000" id="fullsvg"></svg>
+        <form>
+            <div class="row">
+                <div class="col-sm-2">
+                    @*<input type="button" draggable="true" ondragstart="drag(event)" id="drag_bomb" class="bomb" value="drag me to set bomb" />*@
 
-            <div id="4" style="margin-top:20px" class="col-sm-3">
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1"></label>
+                        <label draggable="true" ondragstart="drag(event)" class="start" id="start">START</label>
+                    </div>
 
-                <form>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1"></label>
+                        <label draggable="true" ondragstart="drag(event)" id="bomb" class="bomb">Drag me to set bomb</label>
+                    </div>
+                    <label for="exampleFormControlInput1"></label>
+                    <br />
+
                     <div class="form-group">
                         <label for="exampleFormControlInput1"></label>
                         @*<label class="badge" id="explorationrate"></label>*@
@@ -94,26 +51,121 @@
                         @*<label id="qvalue"></label>*@
                         <button type="button" class="btn btn-primary">Current Position <span id="position" class="badge">0</span></button>
                     </div>
-                    <div class="form-group">
-                        <label for="exampleFormControlTextarea1">All Paths</label>
-                        <textarea id="allPaths" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="col-sm-7">
+                    <div class="table-responsive">
+                        <table class="table" id='board'>
+                            <tr>
+                                @*<label class="bomb">B</label>*@
+                                <td ondrop="drop(event)" ondragover="allowDrop(event)" class="td" id="L1"><br />(L1)<br /><label class="lab" id="L1L"></label></td>
+                                <td class="td" id="L2" ondrop="drop(event)" ondragover="allowDrop(event)"><br />(L2)<br /><label class="lab" id="L2L"></label></td>
+                                <td class="td" id="L3" ondrop="drop(event)" ondragover="allowDrop(event)"><br />(L3)<br /><label class="lab" id="L3L"></label></td>
+                                <td class="td" id="L4" ondrop="drop(event)" ondragover="allowDrop(event)"><br />(L4)<br /><label class="lab" id="L4L"></label></td>
+                                <td class="td" id="L5" ondrop="drop(event)" ondragover="allowDrop(event)"><br />(L5)<br /><label class="lab" id="L5L"></label></td>
+                                <td class="td" id="L6" ondrop="drop(event)" ondragover="allowDrop(event)"><br />(L6)<br /><label class="lab" id="L6L"></label></td>
+                            </tr>
+                            <tr>
+                                <td class="td" id="L7" ondrop="drop(event)" ondragover="allowDrop(event)"><br />(L7)<br /><label class="lab" id="L7L"></label></td>
+                                <td class="td" id="L8" ondrop="drop(event)" ondragover="allowDrop(event)"> <br />(L8)<br /><label class="lab" id="L8L"></label></td>
+                                <td class="td" id="L9" ondrop="drop(event)" ondragover="allowDrop(event)"><br />(L9)<br /><label class="lab" id="L9L"></label></td>
+                                <td class="td" id="L10" ondrop="drop(event)" ondragover="allowDrop(event)"><br />(L10)<br /><label class="lab" id="L10L"></label></td>
+                                <td class="td" id="L11" ondrop="drop(event)" ondragover="allowDrop(event)"><br />(L11)<br /><label class="lab" id="L11L"></label></td>
+                                <td class="td" id="L12" ondrop="drop(event)" ondragover="allowDrop(event)"><br />(L12)<br /><label class="lab" id="L12L"></label></td>
+                            </tr>
+                            <tr>
+                                <td class="td" id="L13" ondrop="drop(event)" ondragover="allowDrop(event)"><br />(L13)<br /><label class="lab" id="L13L"></label></td>
+                                <td class="td" id="L14" ondrop="drop(event)" ondragover="allowDrop(event)"><br />(L14)<br /><label class="lab" id="L14L"></label></td>
+                                <td class="td" id="L15" ondrop="drop(event)" ondragover="allowDrop(event)"><br />(L15)<br /><label class="lab" id="L15L"></label></td>
+                                <td class="td" id="L16" ondrop="drop(event)" ondragover="allowDrop(event)"> <br />(L16)<br /><label class="lab" id="L16L"></label></td>
+                                <td class="td" id="L17" ondrop="drop(event)" ondragover="allowDrop(event)"><br />(L17)<br /><label class="lab" id="L17L"></label></td>
+                                <td class="td" id="L18" ondrop="drop(event)" ondragover="allowDrop(event)"><br />(L18)<br /><label class="lab" id="L18L"></label></td>
+                            </tr>
+                            <tr>
+                                <td class="td" id="L19" ondrop="drop(event)" ondragover="allowDrop(event)"> <br />(L19)<br /><label class="lab" id="L19L"></label></td>
+                                <td class="td" id="L20" ondrop="drop(event)" ondragover="allowDrop(event)"><br />(L20)<br /><label class="lab" id="L20L"></label></td>
+                                <td class="td" id="L21" ondrop="drop(event)" ondragover="allowDrop(event)"><br />(L21)<br /><label class="lab" id="L21L"></label></td>
+                                <td class="td" id="L22" ondrop="drop(event)" ondragover="allowDrop(event)"><br />(L22)<br /><label class="lab" id="L22L"></label></td>
+                                <td class="td" id="L23" ondrop="drop(event)" ondragover="allowDrop(event)"><br />(L23)<br /><label class="lab" id="L23L"></label></td>
+                                <td class="td" id="L24" ondrop="drop(event)" ondragover="allowDrop(event)"><br />(L24)<br /><label class="lab" id="L24L"></label></td>
+                            </tr>
+                            <tr>
+                                <td class="td" id="L25" ondrop="drop(event)" ondragover="allowDrop(event)"><br />(L25)<br /><label class="lab" id="L25L"></label></td>
+                                <td class="td" id="L26" ondrop="drop(event)" ondragover="allowDrop(event)"><br />(L26)<br /><label class="lab" id="L26L"></label></td>
+                                <td class="td" id="L27" ondrop="drop(event)" ondragover="allowDrop(event)"><br />(L27)<br /><label class="lab" id="L27L"></label></td>
+                                <td class="td" id="L28" ondrop="drop(event)" ondragover="allowDrop(event)"><br />(L28)<br /><label class="lab" id="L28L"></label></td>
+                                <td class="td" id="L29" ondrop="drop(event)" ondragover="allowDrop(event)"><br />(L29)<br /><label class="lab" id="L29L"></label></td>
+                                <td class="td" id="L30" ondrop="drop(event)" ondragover="allowDrop(event)"><br />(L30)<br /><label class="lab" id="L30L"></label></td>
+                            </tr>
+                            <tr>
+                                <td class="td" id="L31" ondrop="drop(event)" ondragover="allowDrop(event)"><br />(L31)<br /><label class="lab" id="L31L"></label></td>
+                                <td class="td" id="L32" ondrop="drop(event)" ondragover="allowDrop(event)"> <br />(L32)<br /><label class="lab" id="L32L"></label></td>
+                                <td class="td" id="L33" ondrop="drop(event)" ondragover="allowDrop(event)"><br />(L33)<br /><label class="lab" id="L33L"></label></td>
+                                <td class="td" id="L34" ondrop="drop(event)" ondragover="allowDrop(event)"><br />(L34)<br /><label class="lab" id="L34L"></label></td>
+                                <td class="td" id="L35" ondrop="drop(event)" ondragover="allowDrop(event)"><br />(L35)<br /><label class="lab" id="L35L"></label></td>
+                                <td style="background-color:green" class="td" id="L36"><label class="end">END</label><br />(L36)<br /><label class="lab" id="L36L"></label></td>
+                            </tr>
+                        </table>
                     </div>
-                    <div class="form-group">
-                        <label for="exampleFormControlTextarea1">Existing enviorment name</label>
-                        <input type="text" class="form-control" value="na" id="exstingenv" placeholder="add name to existing env if any " />
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleFormControlTextarea1">Define Episode</label>
-                        <input type="text" class="form-control" id="episode" placeholder="define episode" />
-                    </div>
-                    <div style="margin-top:10px;" class="form-group">
-                        <label for="exampleFormControlTextarea1"></label>
-                        <input type="button" class="btn btn-success" value="train" id="train" />
-                        <input type="button" class="btn btn-success" value="higest path from env" id="fetchHigestPath" />
-                    </div>
-                </form>
+                </div>
+
+                <svg width="4000" height="4000" id="fullsvg"></svg>
+
+                <div id="4" style="margin-top:20px" class="col-sm-3">
+
+                    <form>
+
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1">All Paths</label>
+                            <textarea id="allPaths" class="form-control" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1">Existing enviorment name</label>
+                            <input type="text" class="form-control" value="na" id="exstingenv" placeholder="add name to existing env if any " />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1">Learning Rate</label>
+                            <input type="text" class="form-control" id="LearningRate" placeholder="define Learning Rate" value="0.2" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1">Discount Rate</label>
+                            <input type="text" class="form-control" id="DiscountRate" placeholder="define Discount Rate" value="0.9" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1">Exploration Rate</label>
+                            <input type="text" class="form-control" id="ExplorationRate" placeholder="define Exploration Rate" value="1" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1">Max Exploration Rate</label>
+                            <input type="text" class="form-control" id="MaxExplorationRate" placeholder="define Max Exploration Rate" value="1" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1">Minimum Exploration Rate</label>
+                            <input type="text" class="form-control" id="MinimumExplorationRate" placeholder="define Minimum Exploration Rate" value="0.005" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1">Exploration Decay Rate</label>
+                            <input type="text" class="form-control" id="ExplorationDecayRate" placeholder="define Exploration Decay Rate" value="0.0001" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1">Define Episode</label>
+                            <input type="text" class="form-control" id="episode" placeholder="define episode" value="2000" />
+                        </div>
+                        <div style="margin-top:10px;" class="form-group">
+                            <label for="exampleFormControlTextarea1"></label>
+                            <input type="button" class="btn btn-success" value="train" id="train" />
+                            <input type="button" class="btn btn-success" value="higest path from env" id="fetchHigestPath" />
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
     <style>
         * {
@@ -130,15 +182,19 @@
             border-collapse: collapse;
             border-spacing: 0;
         }
-        .end{
-            color:white;
+
+        .end {
+            color: white;
         }
-        .start{
-            color:white
+
+        .start {
+            color: mediumvioletred
         }
+
         .bomb {
             color: red
         }
+
         .lab {
             font-size: 12px;
         }
@@ -169,9 +225,76 @@
     </style>
 
 
-
     <script>
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            event.dataTransfer.effectAllowed = 'copy'; // only allow moves
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+
+
+            var data = ev.dataTransfer.getData("text");
+
+            if (data === "bomb") {
+                var nodeCopy = document.getElementById(data).cloneNode(true);
+                nodeCopy.id = Math.random();
+                nodeCopy.innerHTML = 'B';
+                nodeCopy.innerText = 'B';
+                ev.target.appendChild(nodeCopy);
+            }
+
+            else if (data === "start") {
+                var nodeCopy = document.getElementById(data).cloneNode(true);
+                nodeCopy.id = Math.random();
+                nodeCopy.innerHTML = 'Start';
+                nodeCopy.innerText = 'Start';
+                ev.target.appendChild(nodeCopy);
+            }
+
+        }
+
+
+        class QStates {
+            constructor() {
+            }
+
+            PositionId = 0;
+            PositionName = '';
+            QValue = 0.00;
+            Reward = 0;
+        };
+
+        class Q {
+            constructor() {
+
+            }
+
+            QStates = [];
+            Rows = 6;
+            Columns = 6;
+            LearningRate = 0.00;
+            DiscountRate = 0.00;
+            ExplorationRate = 0.00;
+            MaxExplorationRate = 0.00;
+            MinimumExplorationRate = 0.00;
+            ExplorationDecayRate = 0.00;
+            TotalEpisode = 0;
+        };
+
         $(function () {
+
+            //$(document).on("dragstart", "#drag_bomb", function (e) {
+            //    e.originalEvent.dataTransfer.setData("text", e.target.id);
+            //});
+
+
             var game = $.connection.aiLizard;
             var c = 'L1';
             game.client.getPath = function (path) {
@@ -217,7 +340,7 @@
                         var b1 = document.getElementById(res2[k]).getBoundingClientRect();
                         var b2 = document.getElementById(res2[k + 1]).getBoundingClientRect();
                         var newLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-                        newLine.setAttribute('id', 'line' + k +'');
+                        newLine.setAttribute('id', 'line' + k + '');
                         newLine.setAttribute('x1', (b1.left + b1.width / 2) + position);
                         newLine.setAttribute('y1', (b1.top + b1.height / 2) + position);
                         newLine.setAttribute('x2', (b2.left + b2.width / 2) + position);
@@ -285,8 +408,10 @@
             };
 
             $.connection.hub.start().done(function () {
+
                 $('#train').click(function () {
-                    game.server.train(parseInt($("#episode").val()), $("#exstingenv").val());
+                    var q = getEnviorment();
+                    game.server.train(q);
                 });
 
                 $('#fetchHigestPath').click(function () {
@@ -295,8 +420,54 @@
             });
 
 
+            var getEnviorment = function () {
+                let qStates = [];
+                let q = new Q();
+
+                let board = $("#board");
+
+                board.find('td').each(function (index, td) {
+
+                    let qState = new QStates();
+                    qState.PositionId = index;
+                    qState.PositionName = $(td).attr("id");
+                    qState.QValue = 0.00;
+
+                    if ($(td).find('.bomb').length > 0)
+                        qState.Reward = -100;
+                    else if ($(td).find('.start').length > 0) {
+                        qState.Reward = 0;
+                        qState.IsStart = true;
+                    }
+                    else if ($(td).find('.end').length > 0)
+                        qState.Reward = 100;
+                    else
+                        qState.Reward = -1;
+
+                    qStates.push(qState);
+
+                });
+
+
+                q.QStates = qStates;
+
+                q.LearningRate = $("#LearningRate").val();
+                q.DiscountRate = $("#DiscountRate").val();
+                q.ExplorationRate = $("#ExplorationRate").val();
+                q.MaxExplorationRate = $("#MaxExplorationRate").val();
+                q.MinimumExplorationRate = $("#MinimumExplorationRate").val();
+                q.ExplorationDecayRate = $("#ExplorationDecayRate").val();
+                q.TotalEpisode = $("#episode").val();
+
+                console.info(q);
+
+                return q;
+            }
+
+
         });
     </script>
+
 
 </body>
 </html>

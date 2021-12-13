@@ -1,9 +1,9 @@
 ﻿using Microsoft.Owin;
 using Owin;
-using TicTacToe;
+using QLearning;
 
-[assembly: OwinStartup(typeof(TicTacToe.Startup))]
-namespace TicTacToe
+[assembly: OwinStartup(typeof(QLearning.Startup))]
+namespace QLearning
 {
     public class Startup
     {
