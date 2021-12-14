@@ -39,7 +39,6 @@ namespace ai_lizard_ui.Models
                         || currentState.PositionName == "L25"
                         || currentState.PositionName == "31") && actionValue == -1)
                     {
-                        // nextPosition = currentPosition;
                         continue;
                     }
                     else
@@ -82,9 +81,9 @@ namespace ai_lizard_ui.Models
                 Clients.All.GetExplorationRate(q.ExplorationRate);
 
                 string r = string.Empty;
-                string path = "L1,";
+                string path = env.Where(c => c.IsStart == true).FirstOrDefault().PositionName + ",";
 
-                var cenp = env.Where(c => c.PositionName == string.Concat("L1")).FirstOrDefault();
+                var cenp = env.Where(c => c.IsStart == true).FirstOrDefault();
                 for (int i = 0; i < 36; i++)
                 {
                     var maxQstate = q.GetMaxQStateFromCurrentPostion(cenp, env);
@@ -111,25 +110,24 @@ namespace ai_lizard_ui.Models
             Clients.All.UniqueState(finalUniquePaths, "");
         }
 
-        public void FetchHighRewardPath(string enviormentPath)
-        {
-            var savedEnviorment = File.ReadAllText(string.Concat(@"d:\\qlog\\enviorments\\", enviormentPath));
-            var enviorments = JsonConvert.DeserializeObject<List<QStates>>(savedEnviorment);
+        //public void FetchHighRewardPath(string enviormentPath)
+        //{
+        //    var savedEnviorment = File.ReadAllText(string.Concat(@"d:\\qlog\\enviorments\\", enviormentPath));
+        //    var enviorments = JsonConvert.DeserializeObject<List<QStates>>(savedEnviorment);
 
-            string path = "L1,";
-            var cenp = enviorments.Where(c => c.PositionName == string.Concat("L1")).FirstOrDefault();
+        //    string path = "L1,";
+        //    var cenp = enviorments.Where(c => c.PositionName == string.Concat("L1")).FirstOrDefault();
 
-            foreach (var env in enviorments)
-            {
-                var maxQstate = new Q().GetMaxQStateFromCurrentPostion(cenp, enviorments);
-                path += maxQstate.PositionName + ",";
-                cenp = maxQstate;
-            }
+        //    foreach (var env in enviorments)
+        //    {
+        //        var maxQstate = new Q().GetMaxQStateFromCurrentPostion(cenp, enviorments);
+        //        path += maxQstate.PositionName + ",";
+        //        cenp = maxQstate;
+        //    }
 
-            Clients.All.GetHighRewardPath(path.TrimEnd(','));
-        }
+        //    Clients.All.GetHighRewardPath(path.TrimEnd(','));
+        //}
     }
-
 
     public class Q
     {
@@ -231,43 +229,10 @@ namespace ai_lizard_ui.Models
             }
             else return 0;
         }
-
-        public List<QStates> GetEnviorment(int rows, int columns)
-        {
-            var states = new List<QStates>();
-            for (int i = 1; i < (rows * columns) + 1; i++)
-            {
-                var positionName = string.Concat("L", i);
-                int reward;
-                // set rewards 
-                if (positionName.Equals("L2")) reward = -100;
-                else if (positionName.Equals("L8")) reward = -100;
-                else if (positionName.Equals("L14")) reward = -100;
-                else if (positionName.Equals("L20")) reward = -100;
-                else if (positionName.Equals("L26")) reward = -100;
-
-                else if (positionName.Equals("L10")) reward = -100;
-                else if (positionName.Equals("L16")) reward = -100;
-                else if (positionName.Equals("L22")) reward = -100;
-                else if (positionName.Equals("L28")) reward = -100;
-                else if (positionName.Equals("L35")) reward = -100;
-                else if (positionName.Equals("L34")) reward = -100;
-
-                else if (positionName.Equals("L11")) reward = -100;
-                else if (positionName.Equals("L24")) reward = -100;
-
-
-
-                else if (positionName.Equals("L36")) reward = 100;
-
-                else reward = -1;
-                states.Add(new QStates() { PositionId = i, QValue = 0, PositionName = positionName, Reward = reward });
-            }
-
-
-            return states;
-        }
+       
     }
+
+
     public class QStates
     {
         public int PositionId { get; set; }
@@ -277,7 +242,5 @@ namespace ai_lizard_ui.Models
 
         public bool IsStart { get; set; } = false;
         public bool IsEnd { get; set; } = false;
-
     }
-
 }

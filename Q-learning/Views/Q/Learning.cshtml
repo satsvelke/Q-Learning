@@ -38,17 +38,14 @@
 
                     <div class="form-group">
                         <label for="exampleFormControlInput1"></label>
-                        @*<label class="badge" id="explorationrate"></label>*@
                         <button type="button" class="btn btn-primary">ExplorationRate <span id="explorationrate" class="badge">0</span></button>
                     </div>
                     <div style="margin-top:20px" class="form-group">
                         <label for="exampleFormControlSelect1"> </label>
-                        @*<label class="badge" id="episodeNumber"></label>*@
                         <button type="button" class="btn btn-primary">Current Episode <span id="episodeNumber" class="badge">0</span></button>
                     </div>
                     <div style="margin-top:20px" class="form-group">
                         <label for="exampleFormControlSelect2"></label>
-                        @*<label id="qvalue"></label>*@
                         <button type="button" class="btn btn-primary">Current Position <span id="position" class="badge">0</span></button>
                     </div>
                 </div>
@@ -373,6 +370,7 @@
             game.client.UniqueState = function (allStates, latestEnv) {
 
                 $('#exstingenv').val(latestEnv);
+                console.log(allStates)
 
                 for (var i = 0; i < allStates.length; i++) {
                     var color = getRandomColor();
